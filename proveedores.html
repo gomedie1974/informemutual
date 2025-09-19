@@ -110,6 +110,22 @@
             background-color: #4e73df;
             border-radius: 3px;
         }
+        .page-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #4e73df, #224abe);
+            
+            /* soporte estándar */
+            background-clip: text;
+            -webkit-background-clip: text; /* Safari y Chrome */
+            -webkit-text-fill-color: transparent; /* hace transparente el texto para mostrar el degradé */
+            color: transparent; /* fallback estándar */
+            
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
     </style>
 </head>
 
@@ -189,11 +205,10 @@
         </ul>
         <!-- End of Sidebar -->
 
-         
-
+      
         <!-- Contenido principal -->
         <div class="container-fluid mt-4">
-            <h1 class="h3 mb-4 text-gray-800">Proveedores y Productos</h1>
+            <h1 class="page-title">Proveedores y Productos</h1>
 
             <!-- Filtro categoría -->
             <div class="mb-3">
@@ -211,7 +226,7 @@
                 </select>
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive mb-4">
                 <table id="proveedoresTable" class="table table-bordered">
                     <thead>
                         <tr>
@@ -298,14 +313,7 @@
         </div>
         <!-- End Contenido principal -->
 
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white mt-4">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>© 2025 Mutual</span>
-                </div>
-            </div>
-        </footer>
+    
     </div>
     <!-- End Page Wrapper -->
 
