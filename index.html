@@ -19,6 +19,8 @@
         rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+
 
 </head>
 <style>
@@ -680,18 +682,33 @@ $(document).ready(function(){
 </script>
 <script>
 document.getElementById("downloadExcel").addEventListener("click", () => {
-    // Tomamos la tabla
     const table = document.getElementById("dataTable");
-    // Convertimos la tabla a workbook de SheetJS
-    const wb = XLSX.utils.table_to_book(table, {sheet: "Cashflow"});
-    // Descargamos el archivo Excel
+
+    // Obtener todas las filas de la tabla
+    const rows = table.querySelectorAll("tr");
+    let data = [];
+
+    // Extraer los datos de la tabla
+    rows.forEach(row => {
+        const cells = row.querySelectorAll("td, th");
+        let rowData = [];
+        cells.forEach(cell => {
+            rowData.push(cell.textContent.trim());
+        });
+        if (rowData.length) data.push(rowData);
+    });
+
+    // Crear una hoja de Excel
+    const ws = XLSX.utils.aoa_to_sheet(data);
+
+    // Crear un libro de Excel
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Cashflow");
+
+    // Descargar el archivo Excel
     XLSX.writeFile(wb, "reporte_cashflow.xlsx");
 });
 </script>
-
-<!-- SheetJS para exportar a Excel -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
 </body>
 
 </html>
