@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard Mutual</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+        
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+<!-- HEAD: agregamos estilos DataTable y colores -->
+<style>
+/* Encabezados DataTable */
+table.dataTable thead th {
+    background-color: #0c041d;
+    color: white;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Hover filas */
+table.dataTable tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Alineación */
+td.text-right {
+    text-align: right;
+    font-size: 0.85rem;
+}
+
+td.label {
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* Colores según categoría */
+tr.ingreso td {
+    background-color: #d4edda; /* verde suave */
+    color: #155724;
+}
+
+tr.egreso td {
+    background-color: #f8d7da; /* rojo suave */
+    color: #721c24;
+}
+
+tr.total td {
+    font-weight: bold;
+    background-color: #fff3cd; /* amarillo suave */
+    color: #856404;
+}
+
+/* Compactar tabla y permitir scroll horizontal */
+.table-responsive {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+#dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Nunito", sans-serif;
+    font-size: 0.85rem;
+}
+
+#dataTable th, #dataTable td {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid #dee2e6;
+    white-space: nowrap;
+}
+
+/* Encabezados oscuros */
+#dataTable th {
+    background-color: #4e73df;
+    color: white;
+    text-align: center;
+}
+</style>
+
+<body id="page-top">
+
+    <div id="wrapper">
+          <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-dark accordion" style="background-color: rgb(12, 4, 29) ;" id="accordionSidebar">
+
+          <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="d-flex align-items-center">
+                    <img src="./img/logosinfondo.webp" alt="Logo" style="height: 50px; width: auto; margin-right: 8px;">
+                 </div>
+            </a>
+
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-home"></i>
+                    <span>inicio</span></a>
+            </li>
+
+        
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+         
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="./proveedores.html">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Proveedores</span></a>
+            </li>
+
+ 
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="./tablas.html">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Cashflow</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            
+
+           <li class="nav-item">
+                <a class="nav-link" href="#" id="openEstatuto">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Estatuto</span>
+                </a>
+            </li>
+
+             <li class="nav-item">
+                <a class="nav-link" href="#" id="openBalance">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Balance</span>
+                </a>
+            </li>
+
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+ 
+
+        </ul>
+        <!-- End of Sidebar -->
+
+    
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800" style="margin-top: 2%;">Tables</h1>
+                  
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                   
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cashflow-body">
+                                        <!-- Las filas se llenarán con JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2020</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+
+
+<!-- JS para cargar Google Sheets y formatear números -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQP51rfRgWXeXPZM22brxey2pM6z1RPgPGV7PcR2W8mOq32l8LvjyoWrgxK3lx8Ux-aqRTcsGNc9kj9/pub?output=csv";
+
+    fetch(sheetUrl)
+        .then(res => res.text())
+        .then(data => {
+            // --- Paso 1: dividir por línea ---
+            const lines = data.split("\n");
+
+            // --- Paso 2: convertir cada línea en array, sin romper números ---
+            const rows = lines.map(line => {
+                const regex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
+                return line.match(regex).map(cell => cell.replace(/"/g,'').trim());
+            });
+
+            const tbody = document.getElementById("cashflow-body");
+            const thead = document.querySelector("#dataTable thead");
+            thead.innerHTML = "";
+            tbody.innerHTML = "";
+
+            // --- Crear encabezado ---
+            const headerRow = document.createElement("tr");
+            rows[0].forEach(header => {
+                const th = document.createElement("th");
+                th.textContent = header;
+                th.style.backgroundColor = "#343a40";
+                th.style.color = "#fff";
+                th.style.textAlign = "center";
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+
+            // --- Crear cuerpo ---
+            rows.slice(1).forEach(row => {
+                if(row.length === 1 && row[0] === "") return; // ignorar filas vacías
+                const tr = document.createElement("tr");
+                const firstCell = row[0].toUpperCase();
+
+                if (firstCell.includes("INGRESOS")) tr.classList.add("ingreso");
+                else if (firstCell.includes("EGRESOS")) tr.classList.add("egreso");
+                else if (firstCell.includes("TOTAL") || firstCell.includes("FLUJO")) tr.classList.add("total");
+
+                row.forEach((cell, i) => {
+                    const td = document.createElement("td");
+                    td.textContent = cell;
+
+                    // Formatear si es número
+                    let num = parseFloat(cell.replace(/\./g,'').replace(',','.').replace(/[^0-9.-]/g,''));
+                    if(!isNaN(num) && i !== 0){
+                        td.textContent = num.toLocaleString("es-AR", {style:"currency", currency:"ARS"});
+                        td.classList.add("text-right");
+                    }
+
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+
+            // Inicializar DataTable
+            if (!$.fn.DataTable.isDataTable('#dataTable')) {
+                $('#dataTable').DataTable({ paging:false, searching:false, info:false, scrollX:true });
+            }
+
+        }).catch(err => console.error(err));
+});
+</script>
+
+
+
+<!-- Modal PDF Estatuto -->
+<div class="modal fade" id="estatutoModal" tabindex="-1" role="dialog" aria-labelledby="estatutoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" style="max-width:90%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="estatutoModalLabel">Estatuto</h5>
+        <!-- Botón de cierre correcto para Bootstrap 4 -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <iframe id="estatutoFrame" src="./img/ESTATUTO.pdf" width="100%" height="600px" style="border:none;"></iframe>
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $('#openEstatuto').click(function(e){
+        e.preventDefault();
+        $('#estatutoModal').modal('show');
+    });
+});
+</script>
+
+<!-- Modal PDF Balance -->
+<div class="modal fade" id="balanceModal" tabindex="-1" role="dialog" aria-labelledby="balanceModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" style="max-width:90%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="balanceModalLabel">Balance</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <iframe id="balanceFrame" src="./img/BALANCE 2024 69.pdf" width="100%" height="600px" style="border:none;"></iframe>
+      </div>
+    
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function(){
+    $('#openBalance').click(function(e){
+        e.preventDefault();
+        $('#balanceModal').modal('show');
+    });
+});
+</script>
+
+
+</body>
+
+</html>

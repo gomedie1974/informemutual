@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Dashboard Mutual - Proveedores</title>
+
+    <!-- FontAwesome -->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- DataTables -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    
+    <style>
+        /* Encabezado degradé */
+        #proveedoresTable thead th {
+            background: linear-gradient(90deg, #4e73df, #224abe);
+            color: white;
+            text-align: center;
+            font-size: 0.9rem;
+            border: none;
+        }
+
+        /* Hover filas */
+        #proveedoresTable tbody tr {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #proveedoresTable tbody tr:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Bordes redondeados y sombra */
+        .table-responsive {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Texto proveedor */
+        #proveedoresTable tbody td:first-child {
+            font-weight: 600;
+            color: #1e272e;
+        }
+
+        /* Colores por categoría de fila */
+        .categoria-alimentos { background-color: #fff3e0; }
+        .categoria-bebidas { background-color: #e0f7fa; }
+        .categoria-belleza { background-color: #fce4ec; }
+        .categoria-hogar { background-color: #e8f5e9; }
+        .categoria-juegos { background-color: #f3e5f5; }
+        .categoria-calzado { background-color: #fff9c4; }
+        .categoria-servicios { background-color: #e1f5fe; }
+        .categoria-accesorios { background-color: #fbe9e7; }
+
+        /* Badges colores por producto */
+        #proveedoresTable tbody td span {
+            display: inline-block;
+            margin: 2px 4px 2px 0;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            border-radius: 12px;
+            color: white;
+        }
+
+        .badge-perfumes { background-color: #ff6f61; }
+        .badge-cremas { background-color: #f7b32b; }
+        .badge-solares { background-color: #f08a5d; }
+        .badge-anteojos { background-color: #6a2c70; }
+        .badge-termos { background-color: #1e90ff; }
+        .badge-botellas { background-color: #00b894; }
+        .badge-mates { background-color: #fdcb6e; }
+        .badge-luncheras { background-color: #d63031; }
+        .badge-vasos { background-color: #2d3436; }
+        .badge-velas { background-color: #e17055; }
+        .badge-aromas { background-color: #00cec9; }
+        .badge-belleza { background-color: #ff7675; }
+        .badge-capsulas { background-color: #fab1a0; }
+        .badge-miel { background-color: #fdcb6e; color: #2d3436; }
+        .badge-frutos { background-color: #00b894; }
+        .badge-mermeladas { background-color: #d63031; }
+        .badge-hogar { background-color: #6c5ce7; }
+        .badge-indumentaria { background-color: #0984e3; }
+        .badge-medias { background-color: #fd79a8; }
+        .badge-juegos { background-color: #00cec9; }
+        .badge-calzado { background-color: #e84393; }
+        .badge-golosinas { background-color: #ffeaa7; color: #2d3436; }
+        .badge-whisky { background-color: #a29bfe; }
+        .badge-gin { background-color: #00b894; }
+        .badge-fernet { background-color: #d63031; }
+        .badge-campari { background-color: #e17055; }
+        .badge-aperol { background-color: #fdcb6e; color: #2d3436; }
+        .badge-servicio { background-color: #0984e3; }
+        .badge-yerba { background-color: #55efc4; color: #2d3436; }
+        .badge-marroquineria { background-color: #6c5ce7; }
+
+        /* Scroll horizontal suave */
+        .table-responsive::-webkit-scrollbar {
+            height: 6px;
+        }
+        .table-responsive::-webkit-scrollbar-thumb {
+            background-color: #4e73df;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+    <div id="wrapper">
+          <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-dark accordion" style="background-color: rgb(12, 4, 29) ;" id="accordionSidebar">
+
+          <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="d-flex align-items-center">
+                    <img src="./img/logosinfondo.webp" alt="Logo" style="height: 50px; width: auto; margin-right: 8px;">
+                 </div>
+            </a>
+
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-home"></i>
+                    <span>inicio</span></a>
+            </li>
+
+        
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+         
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="./proveedores.html">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Proveedores</span></a>
+            </li>
+
+ 
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="./tablas.html">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Cashflow</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            
+
+           <li class="nav-item">
+                <a class="nav-link" href="#" id="openEstatuto">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Estatuto</span>
+                </a>
+            </li>
+
+             <li class="nav-item">
+                <a class="nav-link" href="#" id="openBalance">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Balance</span>
+                </a>
+            </li>
+
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+ 
+
+        </ul>
+        <!-- End of Sidebar -->
+
+         
+
+        <!-- Contenido principal -->
+        <div class="container-fluid mt-4">
+            <h1 class="h3 mb-4 text-gray-800">Proveedores y Productos</h1>
+
+            <!-- Filtro categoría -->
+            <div class="mb-3">
+                <label for="categoriaFilter">Filtrar por categoría:</label>
+                <select id="categoriaFilter" class="form-control" style="width: 200px; display: inline-block; margin-left: 10px;">
+                    <option value="">Todas</option>
+                    <option value="categoria-alimentos">Alimentos</option>
+                    <option value="categoria-bebidas">Bebidas</option>
+                    <option value="categoria-belleza">Belleza</option>
+                    <option value="categoria-hogar">Hogar</option>
+                    <option value="categoria-juegos">Juegos</option>
+                    <option value="categoria-calzado">Calzado</option>
+                    <option value="categoria-servicios">Servicios</option>
+                    <option value="categoria-accesorios">Accesorios</option>
+                </select>
+            </div>
+
+            <div class="table-responsive">
+                <table id="proveedoresTable" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Proveedor</th>
+                            <th>Productos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="categoria-belleza">
+                            <td>Fragancias Importadas</td>
+                            <td><span class="badge-perfumes">Perfumes</span><span class="badge-cremas">Cremas</span><span class="badge-solares">Solares</span><span class="badge-anteojos">Anteojos</span></td>
+                        </tr>
+                        <tr class="categoria-bebidas">
+                            <td>Stanley/Waterdorg</td>
+                            <td><span class="badge-termos">Termos</span><span class="badge-botellas">Botellas</span><span class="badge-mates">Mates</span><span class="badge-luncheras">Luncheras</span><span class="badge-vasos">Vasos</span></td>
+                        </tr>
+                        <tr class="categoria-alimentos">
+                            <td>Nega</td>
+                            <td><span class="badge-velas">Velas</span><span class="badge-aromas">Aromas</span></td>
+                        </tr>
+                        <tr class="categoria-belleza">
+                            <td>Bioalquimia</td>
+                            <td><span class="badge-belleza">Belleza</span></td>
+                        </tr>
+                        <tr class="categoria-alimentos">
+                            <td>Dolce Gusto</td>
+                            <td><span class="badge-capsulas">Capsulas</span></td>
+                        </tr>
+                        <tr class="categoria-alimentos">
+                            <td>Beepure</td>
+                            <td><span class="badge-miel">Miel</span><span class="badge-frutos">Frutos secos</span><span class="badge-mermeladas">Mermeladas</span></td>
+                        </tr>
+                        <tr class="categoria-hogar">
+                            <td>Ropa de blanco</td>
+                            <td><span class="badge-hogar">Hogar</span></td>
+                        </tr>
+                        <tr class="categoria-accesorios">
+                            <td>Moda</td>
+                            <td><span class="badge-indumentaria">Indumentaria</span></td>
+                        </tr>
+                        <tr class="categoria-accesorios">
+                            <td>Elemento</td>
+                            <td><span class="badge-medias">Medias</span></td>
+                        </tr>
+                        <tr class="categoria-juegos">
+                            <td>Ruibal</td>
+                            <td><span class="badge-juegos">Juegos</span></td>
+                        </tr>
+                        <tr class="categoria-juegos">
+                            <td>Soy Feliz</td>
+                            <td><span class="badge-juegos">Juegos</span></td>
+                        </tr>
+                        <tr class="categoria-calzado">
+                            <td>Zapacalzado</td>
+                            <td><span class="badge-calzado">Calzado</span></td>
+                        </tr>
+                        <tr class="categoria-alimentos">
+                            <td>Arcor/Felfort</td>
+                            <td><span class="badge-golosinas">Golosinas</span></td>
+                        </tr>
+                        <tr class="categoria-bebidas">
+                            <td>Jhonny Walker</td>
+                            <td><span class="badge-whisky">Whisky</span></td>
+                        </tr>
+                        <tr class="categoria-bebidas">
+                            <td>Aperitivos</td>
+                            <td><span class="badge-gin">Gin</span><span class="badge-fernet">Fernet</span><span class="badge-campari">Campari</span><span class="badge-aperol">Aperol</span></td>
+                        </tr>
+                        <tr class="categoria-servicios">
+                            <td>Neumaticos Independencia</td>
+                            <td><span class="badge-servicio">Servicio automovil</span></td>
+                        </tr>
+                        <tr class="categoria-alimentos">
+                            <td>Playadito</td>
+                            <td><span class="badge-yerba">Yerba</span></td>
+                        </tr>
+                        <tr class="categoria-accesorios">
+                            <td>Accesorios</td>
+                            <td><span class="badge-marroquineria">Marroquineria</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- End Contenido principal -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white mt-4">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>© 2025 Mutual</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- End Page Wrapper -->
+
+    <!-- Scroll to Top -->
+    <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+
+    <!-- Scripts -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#proveedoresTable').DataTable({
+                "language": {
+                    "search": "Buscar:",
+                    "lengthMenu": "Mostrar _MENU_ registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                }
+            });
+
+            // Filtro por categoría
+            $('#categoriaFilter').on('change', function () {
+                var categoria = $(this).val();
+                table.rows().every(function () {
+                    var row = $(this.node());
+                    if (!categoria || row.hasClass(categoria)) {
+                        row.show();
+                    } else {
+                        row.hide();
+                    }
+                });
+            });
+        });
+    </script>
+
+
+<!-- Modal PDF Estatuto -->
+<div class="modal fade" id="estatutoModal" tabindex="-1" role="dialog" aria-labelledby="estatutoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" style="max-width:90%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="estatutoModalLabel">Estatuto</h5>
+        <!-- Botón de cierre correcto para Bootstrap 4 -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <iframe id="estatutoFrame" src="./img/ESTATUTO.pdf" width="100%" height="600px" style="border:none;"></iframe>
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $('#openEstatuto').click(function(e){
+        e.preventDefault();
+        $('#estatutoModal').modal('show');
+    });
+});
+</script>
+
+<!-- Modal PDF Balance -->
+<div class="modal fade" id="balanceModal" tabindex="-1" role="dialog" aria-labelledby="balanceModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" style="max-width:90%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="balanceModalLabel">Balance</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <iframe id="balanceFrame" src="./img/BALANCE 2024 69.pdf" width="100%" height="600px" style="border:none;"></iframe>
+      </div>
+    
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function(){
+    $('#openBalance').click(function(e){
+        e.preventDefault();
+        $('#balanceModal').modal('show');
+    });
+});
+</script>
+
+
+</body>
+</html>
