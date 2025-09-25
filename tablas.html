@@ -245,6 +245,7 @@ tr.total td {
 document.addEventListener("DOMContentLoaded", () => {
     const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQP51rfRgWXeXPZM22brxey2pM6z1RPgPGV7PcR2W8mOq32l8LvjyoWrgxK3lx8Ux-aqRTcsGNc9kj9/pub?output=csv";
 
+    
     fetch(sheetUrl)
         .then(res => res.text())
         .then(data => {
