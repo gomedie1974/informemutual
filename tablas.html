@@ -26,8 +26,59 @@
 
 </head>
 <!-- HEAD: agregamos estilos DataTable y colores -->
+
 <style>
+
+  /* Mejora el fondo y espaciado general */
+  body {
+    background-color: #f8f9fc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Tarjetas más limpias */
+  .card {
+    border-radius: 0.75rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  }
+
+  /* Colores de borde personalizados */
+  .border-left-success {
+    border-left: 0.25rem solid #1cc88a !important;
+  }
+
+  .border-left-primary {
+    border-left: 0.25rem solid #4e73df !important;
+  }
+
+  /* Mejora de tipografía */
+  .text-xs {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  .h5 {
+    font-size: 1.25rem;
+  }
+
+  .balance-up {
+    color: #1cc88a;
+  }
+
+  .balance-down {
+    color: #e74a3b;
+  }
+
+  .balance-neutral {
+    color: #858796;
+  }
+    
 /* Encabezados DataTable */
+
 table.dataTable thead th {
     background-color: #0c041d;
     color: white;
@@ -71,6 +122,8 @@ tr.total td {
 
 /* Compactar tabla y permitir scroll horizontal */
 .table-responsive {
+    max-height: 400px; /* altura máxima para que aparezca el scroll */
+    overflow-y: auto;
     overflow-x: auto;
     padding-bottom: 0.5rem;
 }
@@ -94,7 +147,82 @@ tr.total td {
     color: white;
     text-align: center;
 }
+    table {
+      border-collapse: separate; /* importante para que sticky funcione bien */
+      border-spacing: 0;
+      min-width: 900px;
+    }
 
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+      white-space: nowrap;
+      background: white; /* previene superposición rara */
+    }
+
+    /* fila de encabezado fija */
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #f8f9fa;
+      z-index: 3;
+    }
+
+    /* primera columna fija */
+    th:first-child,
+    td:first-child {
+      position: sticky;
+      left: 0;
+      background: #fdfdfd; /* mismo color que el fondo */
+      z-index: 2;
+    }
+
+    /* celda de esquina (primera fila + primera columna) */
+    thead th:first-child {
+      z-index: 4;
+    }
+#resumenTableMini {
+    table-layout: fixed;  /* ya lo tenías */
+    width: 100%;          /* importante para que tome los anchos */
+}
+
+#resumenTableMini th,
+#resumenTableMini td {
+    padding: 0.2rem 0.3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Primera columna: Mes */
+#resumenTableMini th:first-child,
+#resumenTableMini td:first-child {
+    width: 60px;  /* ajusta */
+}
+
+/* Segunda columna: Total */
+#resumenTableMini th:nth-child(2),
+#resumenTableMini td:nth-child(2) {
+    width: 80px;  /* ajusta */
+}
+
+/* Mantener el encabezado fijo y cuerpo scrollable */
+#resumenTableMini thead, 
+#resumenTableMini tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+#resumenTableMini tbody {
+    display: block;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+
+ 
 </style>
 
 <body id="page-top">
@@ -202,6 +330,80 @@ tr.total td {
                             </div>
                         </div>
                     </div>
+                     
+<h3 class="mb-2 text-gray-800" style="font-size: 1.2rem;">
+    <i class="fas fa-calendar-alt mr-1" style="color: #4e73df;"></i>
+    Resumen Mensual
+</h3>
+
+<div class="card shadow mb-3">
+    <div class="card-body p-2">
+        <div class="table-responsive" style="overflow-x: auto;">
+            <table class="table table-bordered text-center" id="resumenTableMini">
+                <thead>
+                    <tr>
+                        <th>Mes</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="resumen-body-mini">
+                    <!-- Se llena con JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQP51rfRgWXeXPZM22brxey2pM6z1RPgPGV7PcR2W8mOq32l8LvjyoWrgxK3lx8Ux-aqRTcsGNc9kj9/pub?output=csv";
+
+    fetch(sheetUrl)
+        .then(res => res.text())
+        .then(data => {
+            const lines = data.split("\n");
+            const rows = lines.map(line => {
+                const regex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
+                return line.match(regex)?.map(cell => cell.replace(/"/g,'').trim()) || [];
+            });
+
+            // --- Buscar fila "Totales (Ingresos - Egresos)" ---
+            const totalRow = rows.slice(1).find(r => r[0].trim().toUpperCase() === "TOTALES (INGRESOS - EGRESOS)");
+
+            if(totalRow){
+                const resumenBodyMini = document.getElementById("resumen-body-mini");
+                resumenBodyMini.innerHTML = "";
+
+                rows[0].slice(1).forEach((month, i) => {
+                    let val = totalRow[i + 1]
+                                .replace(/\$/g,'')
+                                .replace(/\./g,'')
+                                .replace(/\s/g,'')
+                                .replace(',','.');
+                    val = parseFloat(val) || 0;
+
+                    const tr = document.createElement("tr");
+
+                    const tdMonth = document.createElement("td");
+                    tdMonth.textContent = month;
+                    tr.appendChild(tdMonth);
+
+                    const tdTotal = document.createElement("td");
+                    tdTotal.textContent = val.toLocaleString("es-AR", {style:"currency", currency:"ARS"});
+                    tdTotal.classList.add(val > 0 ? "balance-up" : val < 0 ? "balance-down" : "balance-neutral");
+                    tr.appendChild(tdTotal);
+
+                    resumenBodyMini.appendChild(tr);
+                });
+            } else {
+                console.error("No se encontró la fila 'Totales (Ingresos - Egresos)'");
+            }
+
+        }).catch(err => console.error(err));
+});
+</script>
+
+ 
 
                 </div>
                 <!-- /.container-fluid -->
@@ -215,6 +417,8 @@ tr.total td {
 
     </div>
     <!-- End of Page Wrapper -->
+
+
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -246,7 +450,6 @@ tr.total td {
 document.addEventListener("DOMContentLoaded", () => {
     const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQP51rfRgWXeXPZM22brxey2pM6z1RPgPGV7PcR2W8mOq32l8LvjyoWrgxK3lx8Ux-aqRTcsGNc9kj9/pub?output=csv";
 
-    
     fetch(sheetUrl)
         .then(res => res.text())
         .then(data => {
@@ -309,8 +512,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }).catch(err => console.error(err));
 });
-</script>
-
+</script>   
 
 
 <!-- Modal PDF Estatuto -->
@@ -365,7 +567,6 @@ $(document).ready(function(){
         $('#balanceModal').modal('show');
     });
 });
-
 
 </script>
 
