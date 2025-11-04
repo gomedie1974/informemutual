@@ -121,10 +121,10 @@ tr.total td {
 
 /* Compactar tabla y permitir scroll horizontal */
 .table-responsive {
-    max-height: 400px; /* altura máxima para que aparezca el scroll */
-    overflow-y: auto;
     overflow-x: auto;
-    padding-bottom: 0.5rem;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 
 #dataTable {
@@ -181,6 +181,35 @@ tr.total td {
     thead th:first-child {
       z-index: 4;
     }
+    /* Filas alternadas */
+#dataTable tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+#dataTable tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+/* Hover más suave */
+#dataTable tbody tr:hover {
+    background-color: #e2e6ea;
+}
+
+/* Encabezado destacado */
+#dataTable thead th {
+    background-color: #4e73df;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Celdas */
+#dataTable td {
+    padding: 0.5rem 0.75rem;
+}
+
 </style>
 
 <body id="page-top">
@@ -306,9 +335,10 @@ tr.total td {
                             <div class="alert alert-danger" role="alert">
                                 <h4 class="alert-heading"><b>Información adicional:</b></h4>
                                 <ul>
-                                    <li>Reservas en u$s 20.000 tipo de cambio $ 1.400</li>
-                                    <li><u>AYUDAS ECONOMICAS OTORGADAS</u> <b>10/2025 $ 3.000.000,00</b></li>
-                                    <li><u>AYUDAS ECONOMICAS OTORGADAS</u> <b>11/2025 $ 750.000,00</b></li>
+                                  <li><u>AYUDAS ECONOMICAS OTORGADAS</u> <b>10/2025 $ 3.000.000,00</b></li>
+                                  <li><u>AYUDAS ECONOMICAS OTORGADAS</u> <b>11/2025 $ 750.000,00</b></li>
+                                  <li>Reservas en u$s 20.000 tipo de cambio $ 1.400</li>
+                                  <li style="color: blue;">Enero 2026 incrementeo cuota social a $ 23.900</li>
                                 </ul>
                             </div>
                         </div>
@@ -455,10 +485,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 tbody.appendChild(tr);
             });
 
-            // Inicializar DataTable
-            if (!$.fn.DataTable.isDataTable('#dataTable')) {
-                $('#dataTable').DataTable({ paging:false, searching:false, info:false, scrollX:true });
-            }
+            // Inicializar DataTable con tu configuración personalizada
+              if (!$.fn.DataTable.isDataTable('#dataTable')) {
+                  $('#dataTable').DataTable({
+                      paging: false,
+                      searching: false,
+                      info: false,
+                      scrollX: true,
+                      dom: 't', // Solo la tabla, sin paginación ni info
+                      order: [], // No ordenar por defecto
+                      columnDefs: [
+                          { className: "text-right", targets: "_all" } // Todo alineado a la derecha
+                      ]
+                  });
+              }
+
 
         }).catch(err => console.error(err));
 });
