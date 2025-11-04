@@ -46,11 +46,30 @@
       cursor: pointer;
     }
     .msg { color: red; margin-top: 10px; }
+    .login-header {
+      display: flex;
+      align-items: center; /* Centra verticalmente */
+      justify-content: center; /* Centra horizontalmente */
+      gap: 15px; /* Espacio entre logo y título */
+      margin-bottom: 25px;
+    }
+
+    .logo {
+      width: 100px; /* Ajusta el tamaño del logo */
+      height: auto;
+    }
+
   </style>
 </head>
 <body>
   <div class="login-container">
-    <h2>Iniciar sesión</h2>
+    
+    <div class="login-header">
+      <img src="./img/logosinfondo.webp" alt="Logo de la empresa" class="logo" />
+      <h2>Iniciar sesión</h2>
+    </div>
+  
+
     <form id="loginForm">
       <div class="input-group">
         <input type="text" id="username" placeholder="Nombre de usuario" required />
