@@ -1,119 +1,637 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Iniciar sesión</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 400px;
-      margin: auto;
-      background: #f4f4f4;
-    }
-    h2 { text-align: center; }
-    input {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      border: none;
-      color: white;
-      font-size: 16px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover { background-color: #0056b3; }
-    .msg { color: red; margin-top: 10px; text-align: center; }
-  </style>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard Mutual</title>
+    <!-- pone el logo en la pestana -->
+    <link rel="shortcut icon" href="./img/Logo Asociacion Mutual.JPG">
+   
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+    <!-- Font Awesome 6 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+
 </head>
-<body>
-  <h2>Iniciar sesión</h2>
-  <form id="loginForm">
-    <input type="email" id="logEmail" placeholder="Correo electrónico" required />
-    <input type="password" id="logPass" placeholder="Contraseña" required />
-    <button type="submit">Entrar</button>
-  </form>
-  <div class="msg" id="logMsg"></div>
+<style>
 
-  <script type="module">
-    // --- IMPORTS Firebase SDK v9+ (modular) ---
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+  /* Mejora el fondo y espaciado general */
+  body {
+    background-color: #f8f9fc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
 
-    // --- TU CONFIGURACIÓN DE FIREBASE ---
-    const firebaseConfig = {
-      apiKey: "AIzaSyAufk9exwZvg13Vq5FxkKfVxpLxhil0OYw",
-      authDomain: "informe-saln.firebaseapp.com",
-      projectId: "informe-saln",
-      storageBucket: "informe-saln.firebasestorage.app",
-      messagingSenderId: "988302920980",
-      appId: "1:988302920980:web:ff1419142be203889c0601",
-      measurementId: "G-DE6WHLGCQH"
-    };
+  /* Tarjetas más limpias */
+  .card {
+    border-radius: 0.75rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
 
-    // Inicializar Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  .card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  }
 
-    // URL donde redirigir tras login exitoso
-    const redirectAfterLogin = 'index.html';
+  /* Colores de borde personalizados */
+  .border-left-success {
+    border-left: 0.25rem solid #1cc88a !important;
+  }
 
-    // Función de login
-    const loginForm = document.getElementById('loginForm');
-    const logMsg = document.getElementById('logMsg');
+  .border-left-primary {
+    border-left: 0.25rem solid #4e73df !important;
+  }
 
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      logMsg.textContent = '';
-      const email = document.getElementById('logEmail').value.trim();
-      const password = document.getElementById('logPass').value;
+  /* Mejora de tipografía */
+  .text-xs {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
 
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        // Si el login es exitoso, redirige al index
-        window.location.href = redirectAfterLogin;
-      } catch (error) {
-        console.error('Error login:', error);
-        logMsg.textContent = traducirError(error);
-      }
-    });
+  .h5 {
+    font-size: 1.25rem;
+  }
 
-    // Si el usuario ya está autenticado, redirige automáticamente
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        window.location.href = redirectAfterLogin;
-      }
-    });
+  .balance-up {
+    color: #1cc88a;
+  }
 
-    // Traducción básica de errores de Firebase
-    function traducirError(error) {
-      const code = error.code;
-      switch (code) {
-        case 'auth/invalid-email':
-          return 'Correo electrónico inválido.';
-        case 'auth/user-disabled':
-          return 'Cuenta deshabilitada.';
-        case 'auth/user-not-found':
-          return 'Usuario no encontrado.';
-        case 'auth/wrong-password':
-          return 'Contraseña incorrecta.';
-        default:
-          return 'Error al iniciar sesión.';
-      }
+  .balance-down {
+    color: #e74a3b;
+  }
+
+  .balance-neutral {
+    color: #858796;
+  }
+    
+/* Encabezados DataTable */
+
+table.dataTable thead th {
+    background-color: #0c041d;
+    color: white;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Hover filas */
+table.dataTable tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Alineación */
+td.text-right {
+    text-align: right;
+    font-size: 0.85rem;
+}
+
+td.label {
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* Colores según categoría */
+tr.ingreso td {
+    background-color: #d4edda; /* verde suave */
+    color: #155724;
+}
+
+tr.egreso td {
+    background-color: #f8d7da; /* rojo suave */
+    color: #721c24;
+}
+
+tr.total td {
+    font-weight: bold;
+    background-color: #fff3cd; /* amarillo suave */
+    color: #856404;
+}
+
+/* Compactar tabla y permitir scroll horizontal */
+.table-responsive {
+    max-height: 400px; /* altura máxima para que aparezca el scroll */
+    overflow-y: auto;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+#dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Nunito", sans-serif;
+    font-size: 0.85rem;
+}
+
+#dataTable th, #dataTable td {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid #dee2e6;
+    white-space: nowrap;
+}
+
+/* Encabezados oscuros */
+#dataTable th {
+    background-color: #4e73df;
+    color: white;
+    text-align: center;
+}
+    table {
+      border-collapse: separate; /* importante para que sticky funcione bien */
+      border-spacing: 0;
+      min-width: 900px;
     }
-  </script>
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+      white-space: nowrap;
+      background: white; /* previene superposición rara */
+    }
+
+    /* fila de encabezado fija */
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #f8f9fa;
+      z-index: 3;
+    }
+
+    /* primera columna fija */
+    th:first-child,
+    td:first-child {
+      position: sticky;
+      left: 0;
+      background: #fdfdfd; /* mismo color que el fondo */
+      z-index: 2;
+    }
+
+    /* celda de esquina (primera fila + primera columna) */
+    thead th:first-child {
+      z-index: 4;
+    }
+</style>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-dark accordion" style="background-color: rgb(12, 4, 29) ;" id="accordionSidebar">
+
+          <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="d-flex align-items-center">
+                    <img src="./img/logosinfondo.webp" alt="Logo" style="height: 50px; width: auto; margin-right: 8px;">
+                 </div>
+            </a>
+
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-home"></i>
+                    <span>inicio</span></a>
+            </li>
+
+        
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+         
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="./proveedores.html">
+                    <i class="fa-solid fa-handshake"></i>
+                    <span>Proveedores Mutual</span></a>
+            </li>
+
+ 
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="./tablas.html">
+                    <i class="fa-solid fa-chart-bar"></i>
+                    <span>Cashflow</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            
+
+           <li class="nav-item">
+                <a class="nav-link" href="#" id="openEstatuto">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Estatuto</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="openBalance">
+                    <i class="fa-solid fa-balance-scale"></i>
+                    <span>Balance</span>
+                </a>
+            </li>
+
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+ 
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+              
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid" style="margin-top: 2%;">
+
+               <!-- Page Heading -->
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800" style="font-size: 2rem; font-weight: 700;">
+                    <i class="fas fa-tachometer-alt mr-2" style="color: #4e73df;"></i>Dashboard
+                </h1>
+                    <div class="d-flex">
+                        <!-- <a href="#" id="downloadPdf" class="btn btn-sm btn-primary shadow-sm mr-2">
+                            <i class="fas fa-download fa-sm text-white-50"></i> Descargar PDF
+                        </a> -->
+                        <a href="#" id="downloadExcel" class="btn btn-sm btn-success shadow-sm">
+                            <i class="fas fa-file-excel fa-sm text-white-50"></i> Descargar Excel
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Información adicional debajo del Dashboard -->
+                     <div class="row">
+                        <div class="col-12 ">
+                            <div class="alert alert-warning" role="alert">
+                                <h4 class="alert-heading"><b>Acciones a tomar:</b></h4>
+                                <ul>
+                                    <li>Se discontinúa por tiempo indeterminado la percepción del 1/4 aguinaldo.</li>
+                                    <li>Se suspende el beneficio de servicio de comedor.</li>
+                                    <li>Por tiempo indeterminado, cada empleado asumirá el costo de Galeno. En consecuencia, dicho gasto dejará de registrarse a partir de noviembre 2025.</li>                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                     <div class="row">
+                        <div class="col-12 mb-4">
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading"><b>Información adicional:</b></h4>
+                                <ul>
+                                    <li>Reservas en u$s 20.000 tipo de cambio $ 1.400</li>
+                                    <li><u>AYUDAS ECONOMICAS OTORGADAS</u> <b>10/2025 $ 3.000.000,00</b></li>
+                                    <li><u>AYUDAS ECONOMICAS OTORGADAS</u> <b>11/2025 $ 750.000,00</b></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Content Row -->
+                     <div class="row" id="balanceCardsContainer"></div>
+
+                    
+                    <!-- Content Row -->
+ 
+
+             
+
+                    <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                     <h1 class="h3 mb-0 text-gray-800" style="font-size: 2rem; font-weight: 700; margin-top: 2%;">
+                        <i class="fas fa-chart-line mr-2" style="color: #4e73df;"></i>
+                        Cashflow
+                    </h1>                  
+                  
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                   
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cashflow-body">
+                                        <!-- Las filas se llenarán con JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+ 
+                          
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+
+
+            </div>
+            <!-- End of Main Content -->
+
+            
+
+            
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+ 
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+
+    <!-- JS para cargar Google Sheets y formatear números -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQP51rfRgWXeXPZM22brxey2pM6z1RPgPGV7PcR2W8mOq32l8LvjyoWrgxK3lx8Ux-aqRTcsGNc9kj9/pub?output=csv";
+
+    fetch(sheetUrl)
+        .then(res => res.text())
+        .then(data => {
+            // --- Paso 1: dividir por línea ---
+            const lines = data.split("\n");
+
+            // --- Paso 2: convertir cada línea en array, sin romper números ---
+            const rows = lines.map(line => {
+                const regex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
+                return line.match(regex).map(cell => cell.replace(/"/g,'').trim());
+            });
+
+            const tbody = document.getElementById("cashflow-body");
+            const thead = document.querySelector("#dataTable thead");
+            thead.innerHTML = "";
+            tbody.innerHTML = "";
+
+            // --- Crear encabezado ---
+            const headerRow = document.createElement("tr");
+            rows[0].forEach(header => {
+                const th = document.createElement("th");
+                th.textContent = header;
+                th.style.backgroundColor = "#343a40";
+                th.style.color = "#fff";
+                th.style.textAlign = "center";
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+
+            // --- Crear cuerpo ---
+            rows.slice(1).forEach(row => {
+                if(row.length === 1 && row[0] === "") return; // ignorar filas vacías
+                const tr = document.createElement("tr");
+                const firstCell = row[0].toUpperCase();
+
+                if (firstCell.includes("INGRESOS")) tr.classList.add("ingreso");
+                else if (firstCell.includes("EGRESOS")) tr.classList.add("egreso");
+                else if (firstCell.includes("TOTAL") || firstCell.includes("FLUJO")) tr.classList.add("total");
+
+                row.forEach((cell, i) => {
+                    const td = document.createElement("td");
+                    td.textContent = cell;
+
+                    // Formatear si es número
+                    let num = parseFloat(cell.replace(/\./g,'').replace(',','.').replace(/[^0-9.-]/g,''));
+                    if(!isNaN(num) && i !== 0){
+                        td.textContent = num.toLocaleString("es-AR", {style:"currency", currency:"ARS"});
+                        td.classList.add("text-right");
+                    }
+
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+
+            // Inicializar DataTable
+            if (!$.fn.DataTable.isDataTable('#dataTable')) {
+                $('#dataTable').DataTable({ paging:false, searching:false, info:false, scrollX:true });
+            }
+
+        }).catch(err => console.error(err));
+});
+</script>   
+
+<!-- Asegurate de tener estas librerías -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+document.getElementById("downloadPdf").addEventListener("click", () => {
+    const { jsPDF } = window.jspdf;
+
+    // Tomamos solo la tabla que cargamos dinámicamente
+    const table = document.getElementById("dataTable");
+
+    // Hacer visible toda la tabla temporalmente
+    table.style.width = 'auto';
+    table.style.tableLayout = 'auto';
+
+    html2canvas(table, { scale: 2 }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('l', 'pt', 'a4'); // Horizontal
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
+
+        const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth * ratio, imgHeight * ratio);
+        pdf.save('reporte_cashflow.pdf');
+
+        // Restaurar estilos
+        table.style.width = '';
+        table.style.tableLayout = '';
+    }).catch(err => console.error(err));
+});
+
+</script>
+
+<!-- Modal PDF Estatuto -->
+<div class="modal fade" id="estatutoModal" tabindex="-1" role="dialog" aria-labelledby="estatutoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" style="max-width:90%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="estatutoModalLabel">Estatuto</h5>
+        <!-- Botón de cierre correcto para Bootstrap 4 -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <iframe id="estatutoFrame" src="./ESTATUTO.pdf" width="100%" height="600px" style="border:none;"></iframe>
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $('#openEstatuto').click(function(e){
+        e.preventDefault();
+        $('#estatutoModal').modal('show');
+    });
+});
+</script>
+
+<!-- Modal PDF Balance -->
+<div class="modal fade" id="balanceModal" tabindex="-1" role="dialog" aria-labelledby="balanceModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" style="max-width:90%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="balanceModalLabel">Balance</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <iframe id="balanceFrame" src="./BALANCE 2024 69.pdf" width="100%" height="600px" style="border:none;"></iframe>
+      </div>
+    
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function(){
+    $('#openBalance').click(function(e){
+        e.preventDefault();
+        $('#balanceModal').modal('show');
+    });
+});
+</script>
+<script>
+document.getElementById("downloadExcel").addEventListener("click", () => {
+    const table = document.getElementById("dataTable");
+
+    // Obtener todas las filas de la tabla
+    const rows = table.querySelectorAll("tr");
+    let data = [];
+
+    // Extraer los datos de la tabla
+    rows.forEach(row => {
+        const cells = row.querySelectorAll("td, th");
+        let rowData = [];
+        cells.forEach(cell => {
+            rowData.push(cell.textContent.trim());
+        });
+        if (rowData.length) data.push(rowData);
+    });
+
+    // Crear una hoja de Excel
+    const ws = XLSX.utils.aoa_to_sheet(data);
+
+    // Crear un libro de Excel
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Cashflow");
+
+    // Descargar el archivo Excel
+    XLSX.writeFile(wb, "reporte_cashflow.xlsx");
+});
+</script>
+
+<script>
+  const balances = [
+    { mes: "Octubre", año: 2025, monto: "21.387.502,56", cambio: "neutral"},
+    { mes: "Noviembre", año: 2025, monto: "23.954.615,00", cambio: "up" },
+    { mes: "Diciembre", año: 2025, monto: "17.125.428,00", cambio: "down" },
+    { mes: "Enero", año: 2026, monto: "18.451.278,25", cambio: "up" },
+    { mes: "Febrero", año: 2026, monto: "20.035.603,50", cambio: "up" },
+  ];
+
+  const container = document.getElementById("balanceCardsContainer");
+
+  balances.forEach(item => {
+    const color = item.año === 2025 ? "success" : "primary";
+    const arrowIcon = item.cambio === "up" ? "fa-arrow-up" :
+                      item.cambio === "down" ? "fa-arrow-down" : "";
+    const arrowColor = item.cambio === "down" ? "red" :
+                       item.cambio === "up" ? "green" : "transparent";
+
+    const card = `
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-${color} shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-${color} text-uppercase mb-1">
+                  Balance ${item.mes} ${item.año}
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                  $ ${item.monto}
+                  ${arrowIcon ? `
+                    <span class="ml-2">
+                      <i class="fas ${arrowIcon}" style="color: ${arrowColor};"></i>
+                    </span>` : ""}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    container.innerHTML += card;
+  });
+  
+</script>
+
+<!-- Botón Ir Arriba -->
+<button id="btnArriba" title="Volver arriba">↑</button>
+
 </body>
+
 </html>
