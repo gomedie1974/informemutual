@@ -288,27 +288,27 @@ tr.total td {
 
 
                 <!-- Información adicional debajo del Dashboard -->
-<!--                     <div class="row">
+                     <div class="row">
                         <div class="col-12 ">
                             <div class="alert alert-warning" role="alert">
                                 <h4 class="alert-heading"><b>Acciones a tomar:</b></h4>
                                 <ul>
-                                    <li>Se discontinúa la percepción del 1/4 aguinaldo.</li>
+                                    <li>Se discontinúa por tiempo indeterminado la percepción del 1/4 aguinaldo.</li>
                                     <li>Se suspende el beneficio de servicio de comedor.</li>
-                                    <li>Por tiempo indeterminado, cada empleado asumirá el costo de Galeno. En consecuencia, dicho gasto dejará de registrarse a partir de octubre 2025.</li>
-                                    <li>No se abonará el aguinaldo correspondiente a diciembre de 2025.</li>
+                                    <li>Por tiempo indeterminado, cada empleado asumirá el costo de Galeno. En consecuencia, dicho gasto dejará de registrarse a partir de noviembre 2025.</li>                                    
                                 </ul>
                             </div>
                         </div>
                     </div>
- -->                    
+                    
                      <div class="row">
                         <div class="col-12 mb-4">
                             <div class="alert alert-danger" role="alert">
                                 <h4 class="alert-heading"><b>Información adicional:</b></h4>
                                 <ul>
-                                    <li>Reservas en u$s 25.000 tipo de cambio $ 1.350</li>
-                                    <li>Cashflow elaborado a partir de la suma de las reservas y el apoyo de SALN.</li>
+                                    <li>Reservas en u$s 20.000 tipo de cambio $ 1.400</li>
+                                    <li><u>AYUDAS ECONOMICAS OTORGADAS</u> <b>10/2025 $ 3.000.000,00</b></li>
+                                    <li><u>AYUDAS ECONOMICAS OTORGADAS</u> <b>11/2025 $ 750.000,00</b></li>
                                 </ul>
                             </div>
                         </div>
@@ -586,19 +586,11 @@ document.getElementById("downloadExcel").addEventListener("click", () => {
 
 <script>
   const balances = [
-    { mes: "Septiembre", año: 2025, monto: "52.473.520,67", cambio: "neutral" },
-    { mes: "Octubre", año: 2025, monto: "53.290.619,56", cambio: "up" },
-    { mes: "Noviembre", año: 2025, monto: "47.593.953,45", cambio: "down" },
-    { mes: "Diciembre", año: 2025, monto: "32.532.774,34", cambio: "down" },
-    { mes: "Enero", año: 2026, monto: "29.447.259,23", cambio: "down" },
-    { mes: "Febrero", año: 2026, monto: "27.846.801,12", cambio: "down" },
-    { mes: "Marzo", año: 2026, monto: "30.086.400,01", cambio: "up" },
-    { mes: "Abril", año: 2026, monto: "31.239.998,90", cambio: "up" },
-    { mes: "Mayo", año: 2026, monto: "32.116.597,79", cambio: "up" },
-    { mes: "Junio", año: 2026, monto: "30.128.341,68", cambio: "down" },
-    { mes: "Julio", año: 2026, monto: "31.611.940,57", cambio: "up" },
-    { mes: "Agosto", año: 2026, monto: "33.617.394,46", cambio: "up" },
-    { mes: "Septiembre", año: 2026, monto: "35.526.993,35", cambio: "up" },
+    { mes: "Octubre", año: 2025, monto: "21.387.502,56", cambio: "neutral"},
+    { mes: "Noviembre", año: 2025, monto: "23.954.615,00", cambio: "up" },
+    { mes: "Diciembre", año: 2025, monto: "17.125.428,00", cambio: "down" },
+    { mes: "Enero", año: 2026, monto: "18.451.278,25", cambio: "up" },
+    { mes: "Febrero", año: 2026, monto: "20.035.603,50", cambio: "up" },
   ];
 
   const container = document.getElementById("balanceCardsContainer");
@@ -636,6 +628,9 @@ document.getElementById("downloadExcel").addEventListener("click", () => {
   });
   
 </script>
+
+<!-- Botón Ir Arriba -->
+<button id="btnArriba" title="Volver arriba">↑</button>
 
 </body>
 
