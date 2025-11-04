@@ -331,29 +331,6 @@ tr.total td {
                         </div>
                     </div>
                      
-<h3 class="mb-2 text-gray-800" style="font-size: 1.2rem;">
-    <i class="fas fa-calendar-alt mr-1" style="color: #4e73df;"></i>
-    Resumen Mensual
-</h3>
-
-<div class="card shadow mb-3">
-    <div class="card-body p-2">
-        <div class="table-responsive" style="overflow-x: auto;">
-            <table class="table table-bordered text-center" id="resumenTableMini">
-                <thead>
-                    <tr>
-                        <th>Mes</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody id="resumen-body-mini">
-                    <!-- Se llena con JS -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQP51rfRgWXeXPZM22brxey2pM6z1RPgPGV7PcR2W8mOq32l8LvjyoWrgxK3lx8Ux-aqRTcsGNc9kj9/pub?output=csv";
@@ -368,13 +345,14 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             // --- Buscar fila "Totales (Ingresos - Egresos)" ---
-            const totalRow = rows.slice(1).find(r => r[0].trim().toUpperCase() === "TOTALES (INGRESOS - EGRESOS)");
+            const totalRow = rows.slice(1).find(r => r[0]?.replace(/\s+/g,'').toUpperCase() === "TOTALES(INGRESOS-EGRESOS)");
 
             if(totalRow){
                 const resumenBodyMini = document.getElementById("resumen-body-mini");
                 resumenBodyMini.innerHTML = "";
 
                 rows[0].slice(1).forEach((month, i) => {
+                    month = month.trim();
                     let val = totalRow[i + 1]
                                 .replace(/\$/g,'')
                                 .replace(/\./g,'')
